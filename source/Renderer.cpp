@@ -6,6 +6,41 @@
 #include "stb_image.h"
 #include "Input.hpp"
 #include <stdexcept>
+#include <vector>
+#include "Mesh.hpp"
+
+std::vector<GLfloat> cube_vertices = {
+    // positions          // colors
+    -0.5f, -0.5f, -0.5f,  1.0f, 0.2f, 1.0f, 
+     0.5f, -0.5f, -0.5f,  0.0f, 0.9f, 0.0f, 
+     0.5f,  0.5f, -0.5f,  0.4f, 1.0f, 0.2f, 
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 
+    -0.5f, -0.5f,  0.5f,  0.6f, 1.0f, 0.4f, 
+     0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.5f, 
+     0.5f,  0.5f,  0.5f,  0.8f, 1.0f, 0.6f, 
+    -0.5f,  0.5f,  0.5f,  0.5f, 0.1f, 1.0f  
+};
+
+std::vector<GLuint> cube_indices = {
+    // back face
+    0, 1, 2,
+    2, 3, 0,
+    // front face
+    4, 5, 6,
+    6, 7, 4,
+    // left face
+    0, 3, 7,
+    7, 4, 0,
+    // right face
+    1, 5, 6,
+    6, 2, 1,
+    // bottom face
+    0, 4, 5,
+    5, 1, 0,
+    // top face
+    3, 2, 6,
+    6, 7, 3
+};
 
 Renderer::Renderer()
 {
@@ -22,7 +57,7 @@ Renderer::~Renderer() {}
 bool Renderer::Init() 
 {
 
-    glm::vec3 cameraPos   = glm::vec3(-86.0f, 176.0f, 220.0f);
+    glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f, +10.0f);
     glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     
@@ -82,6 +117,8 @@ void Renderer::Run()
 {
     // Start Objects
 
+    Mesh mesh{cube_vertices, cube_indices};
+
     Shader shader{"shaders/vs.glsl", "shaders/fs.glsl"};
 
     glm::mat4 model = glm::mat4(1.0f);
@@ -100,11 +137,13 @@ void Renderer::Run()
 
         glm::mat4 view = m_Context.camera.GetViewMatrix();
 
+        shader.useShader();
         shader.setMat4("model", model);
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
         //Draw
+        mesh.Draw();
 
         glfwSwapBuffers(m_Context.window);
         glfwPollEvents();

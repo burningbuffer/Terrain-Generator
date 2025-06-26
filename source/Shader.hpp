@@ -11,7 +11,7 @@
 class Shader
 {
 public:
-	GLuint ID = NULL;
+	GLuint m_ID = NULL;
 	Shader(const char* VertexShaderFile, const char* FragmentShaderFile);
 	
 	void useShader();
