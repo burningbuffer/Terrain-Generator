@@ -78,14 +78,11 @@ void Mesh::FillBuffers()
     BindVAO();
 
     CreateAndUploadVBO();
-    //vertices.clear();
     BindVBO();
 
     CreateAndUploadEBO();
-    //indices.clear();
     BindEBO();
 
-    //vao.LinkVBOattributes(vbo, 0, 6, 0);
     LinkVBOAttributes(m_VBO, 0, 3, 3, 0);
     LinkVBOAttributes(m_VBO, 1, 3, 3, 3);
 

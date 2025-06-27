@@ -4,9 +4,7 @@
 
 Terrain::Terrain(){}
 
-Terrain::~Terrain()
-{
-}
+Terrain::~Terrain(){}
 
 void Terrain::SetTerrainScale(float scale)
 {
@@ -31,7 +29,7 @@ void Terrain::LoadHeightMapFromFile(const char* fileName)
 
     if(file == NULL)
     {
-        std::cout << "ERROR loading the file\n";
+        std::cout << "ERROR: loading the file\n";
         return;
     }
 
@@ -45,19 +43,16 @@ void Terrain::LoadHeightMapFromFile(const char* fileName)
 
     if(bytes_read != size)
     {
-        std::cout << "ERROR bytes_read != file size\n";
+        std::cout << "ERROR: bytes_read != file size\n";
         exit(0);
     }
 
     fclose(file);
 
     m_TerrainSize = std::sqrtf(size / sizeof(float));
-
-    std::cout << "STEP1" << std::endl;
     m_HeightMap.InitArray(m_TerrainSize, m_TerrainSize, pData);
-    std::cout << "STEP2" << std::endl;
     m_TerrainMesh.InitMesh(this, m_TerrainSize, m_TerrainSize);
-    std::cout << "STEP3" << std::endl;
+
 }
 
 void Terrain::Draw(Shader shader)
