@@ -5,28 +5,54 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "VBO.hpp"
-#include "VAO.hpp"
-#include "EBO.hpp"
 #include "Shader.hpp"
+
+class Terrain;
+
+struct Vertex
+{
+    glm::vec3 Pos;
+
+    void InitVertex(const Terrain *pTerrain, int x, int z);
+};
 
 class Mesh
 {
 public:
 
-    Mesh(const std::vector<float>& vertices, const std::vector<GLuint>& indices);
+    Mesh();
     ~Mesh();
+    void InitMesh(const Terrain *pTerrain,int width, int depth);
     void Draw();
 
 private:
 
-    std::vector<GLfloat> vertices;
-    std::vector<GLuint> indices;
+    void FillVertices(const Terrain *pTerrain);
+    void FillIndices();
+    
+    void CreateVAO();
+    void LinkVBOAttributes(GLuint VBO, GLuint layout, int numOfComponents, int lineSize, int offset);
+    void BindVAO();
+    void UnbindVAO();
 
-    VAO m_VAO;
-    VBO m_VBO;
-    EBO m_EBO;
+    void CreateAndUploadVBO();
+    void BindVBO();
+    void UnbindVBO();
 
-    void SetupMesh();
+    void CreateAndUploadEBO();
+    void BindEBO();
+    void UnbindEBO();
+
+    void FillBuffers();
+
+    std::vector<Vertex> m_Vertices;
+    std::vector<GLuint> m_Indices;
+
+    GLuint m_VAO;
+    GLuint m_VBO;
+    GLuint m_EBO;
+   
+    int m_Width = 0;
+    int m_Depth = 0;
 
 };
