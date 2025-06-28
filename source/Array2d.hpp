@@ -6,9 +6,13 @@ public:
     Array2d();
     ~Array2d();
     void InitArray(int width, int depth, void* pData);
+    void InitArray(int width, int depth, float data);
     void Delete();
     float Get(int x, int y) const;
     void Set(float val, int x, int y);
+    void GetMinMax(float& Min, float& Max);
+    void Normalize(float MinRange, float MaxRange);
+    void PrintArray();
 private:
     int m_Width = 0;
     int m_Depth = 0;

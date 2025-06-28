@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <vector>
 #include "Terrain.hpp"
+#include "FaultFormationTerrain.hpp"
 
 Renderer::Renderer()
 {
@@ -23,9 +24,9 @@ Renderer::~Renderer() {}
 
 bool Renderer::Init() 
 {
-    glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f, +10.0f);
+    glm::vec3 cameraPos   = glm::vec3(0.0f, +300.0f, +10.0f);
     glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 cameraFront = glm::vec3(0.0, 0.0, 0.0);
     
     m_Context.camera = Camera(cameraPos, cameraUp, cameraFront);
 
@@ -39,7 +40,7 @@ bool Renderer::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_Context.window = glfwCreateWindow(m_Context.width, m_Context.height, "Demo", nullptr, nullptr);
+    m_Context.window = glfwCreateWindow(m_Context.width, m_Context.height, "Window", nullptr, nullptr);
 
     if (!m_Context.window)
     {
@@ -79,16 +80,26 @@ void Renderer::ShowVendor()
     std::cout << "GLSL Version    : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
-void Renderer::Run()
-{
-    Terrain terrain;
+void Renderer::Run() 
+{ 
+    FaultFormationTerrain terrain;
     terrain.SetTerrainScale(3);
-    terrain.LoadHeightMapFromFile("data/heightmap.save");
 
+    terrain.LoadHeightMapFlat(256);
+    //terrain.LoadHeightMapFromFile("data/heightmap.save");
+
+    int iterations = 200;
+    float filter = 0.5f;
+    float minHeight = 0;
+    float maxHeight = 300.f;
+
+    terrain.CreateFaultFormationTerrain(iterations, filter , minHeight, maxHeight);
+    terrain.InitTerrainMesh();
+    
     Shader shader{"shaders/vs.glsl", "shaders/fs.glsl"};
 
     glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 1000.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 2000.0f);
 
     while (!glfwWindowShouldClose(m_Context.window))
     {

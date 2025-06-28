@@ -21,6 +21,12 @@ float Terrain::GetHeight(int x, int z) const
     return m_HeightMap.Get(x, z);
 }
 
+void Terrain::LoadHeightMapFlat(size_t size)
+{
+    m_TerrainSize = size;
+    m_HeightMap.InitArray(m_TerrainSize, m_TerrainSize, 0.0f);
+}
+
 void Terrain::LoadHeightMapFromFile(const char* fileName)
 {
     FILE *file;
@@ -51,8 +57,22 @@ void Terrain::LoadHeightMapFromFile(const char* fileName)
 
     m_TerrainSize = std::sqrtf(size / sizeof(float));
     m_HeightMap.InitArray(m_TerrainSize, m_TerrainSize, pData);
-    m_TerrainMesh.InitMesh(this, m_TerrainSize, m_TerrainSize);
 
+}
+
+void Terrain::InitTerrainMesh()
+{
+    m_TerrainMesh.InitMesh(this, m_TerrainSize, m_TerrainSize);
+}
+
+void Terrain::PrintHeightMapArray()
+{
+    m_HeightMap.PrintArray();
+}
+
+void Terrain::SetTerrainSize(size_t size)
+{
+    m_TerrainSize = size;
 }
 
 void Terrain::Draw(Shader shader)
