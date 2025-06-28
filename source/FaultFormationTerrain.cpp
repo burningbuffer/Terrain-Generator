@@ -9,7 +9,6 @@ FaultFormationTerrain::~FaultFormationTerrain(){}
 
 void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, float filter, float minHeight, float maxHeight)
 {
-
     float deltaHeight = maxHeight - minHeight;
     
     for(int i = 0; i < numOfIterations; i++)

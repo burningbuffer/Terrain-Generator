@@ -56,38 +56,31 @@ void Array2d::Set(float val, int x, int y)
     m_pData[(x*m_Width)+y] = val;
 }
 
-void Array2d::GetMinMax(float& Min, float& Max)
+void Array2d::Normalize(float minRange, float maxRange)
 {
-    Max = m_pData[0];
-    Min = m_pData[0];
+    float min = m_pData[0];
+    float max = m_pData[0];
 
     for (int i = 1 ; i < m_Width * m_Depth ; i++) {
-        if (m_pData[i] < Min) {
-            Min = m_pData[i];
+        if (m_pData[i] < min) {
+            min = m_pData[i];
         }
 
-        if (m_pData[i] > Max) {
-            Max = m_pData[i];
+        if (m_pData[i] > max) {
+            max = m_pData[i];
         }
     }
-}
 
-void Array2d::Normalize(float MinRange, float MaxRange)
-{
-    float Min, Max;
-
-    GetMinMax(Min, Max);
-
-    if (Max <= Min) {
+    if (max <= min) {
         return;
     }
 
-    float MinMaxDelta = Max - Min;
-    float MinMaxRange = MaxRange - MinRange;
+    float minMaxDelta = max - min;
+    float minMaxRange = maxRange - minRange;
 
     for (int i = 0 ; i < m_Width * m_Depth; i++) 
     {
-        m_pData[i] = ((m_pData[i] - Min)/MinMaxDelta) * MinMaxRange + MinRange;
+        m_pData[i] = ((m_pData[i] - min)/minMaxDelta) * minMaxRange + minRange;
     }
 }
 

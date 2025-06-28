@@ -10,7 +10,6 @@ public:
     void Delete();
     float Get(int x, int y) const;
     void Set(float val, int x, int y);
-    void GetMinMax(float& Min, float& Max);
     void Normalize(float MinRange, float MaxRange);
     void PrintArray();
 private:
