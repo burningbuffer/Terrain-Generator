@@ -21,10 +21,10 @@ float Terrain::GetHeight(int x, int z) const
     return m_HeightMap.Get(x, z);
 }
 
-void Terrain::LoadHeightMapFlat(size_t size)
+void Terrain::LoadHeightMapFlat(uint32_t width, uint32_t depth)
 {
-    m_TerrainSize = size;
-    m_HeightMap.InitArray(m_TerrainSize, m_TerrainSize, 0.0f);
+    m_TerrainSize = width * depth;
+    m_HeightMap.InitArray(width, depth, 1.0f);
 }
 
 void Terrain::LoadHeightMapFromFile(const char* fileName)
@@ -62,7 +62,7 @@ void Terrain::LoadHeightMapFromFile(const char* fileName)
 
 void Terrain::InitTerrainMesh()
 {
-    m_TerrainMesh.InitMesh(this, m_TerrainSize, m_TerrainSize);
+    m_TerrainMesh.InitMesh(this, m_TerrainWidth, m_TerrainDepth);
 }
 
 void Terrain::PrintHeightMapArray()
@@ -70,9 +70,11 @@ void Terrain::PrintHeightMapArray()
     m_HeightMap.PrintArray();
 }
 
-void Terrain::SetTerrainSize(size_t size)
+void Terrain::SetTerrainSize(uint32_t width, uint32_t depth)
 {
-    m_TerrainSize = size;
+    m_TerrainSize = width * depth;
+    m_TerrainWidth = width;
+    m_TerrainDepth = depth;
 }
 
 void Terrain::Draw(Shader shader)

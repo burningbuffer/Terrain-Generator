@@ -7,7 +7,6 @@ struct Context;
 
 void ProcessInput(GLFWwindow* window)
 {
-    // TODO: study c++ cast differences
     Context* context = static_cast<Context*>(glfwGetWindowUserPointer(window));
 
     if (!context)

@@ -1,16 +1,14 @@
 #include "FaultFormationTerrain.hpp"
 #include <random>
 
-FaultFormationTerrain::FaultFormationTerrain()
-{
-}
+FaultFormationTerrain::FaultFormationTerrain(){}
 
 FaultFormationTerrain::~FaultFormationTerrain(){}
 
 void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, float filter, float minHeight, float maxHeight)
 {
-    float deltaHeight = maxHeight - minHeight;
-    
+    filter = std::clamp(filter, 0.0f, 1.0f);
+
     for(int i = 0; i < numOfIterations; i++)
     {
         float newHeight = maxHeight - ( ( maxHeight-minHeight )*i)/numOfIterations;
@@ -18,9 +16,9 @@ void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, f
         Line line = GenerateRandomLine();
         glm::vec2 random = glm::vec2{line.p2 - line.p1};
 
-        for(int x = 0; x < m_TerrainSize; x++)
+        for(int z = 0; z < m_TerrainDepth; z++)
         {
-            for(int z = 0; z < m_TerrainSize; z++) 
+            for(int x = 0; x < m_TerrainWidth; x++) 
             {
                 glm::vec2 RandomToIndexVector = glm::vec2{glm::vec2{x, z} - line.p1};
                 if(random.x * RandomToIndexVector.y - random.y * RandomToIndexVector.x > 0)
@@ -31,25 +29,55 @@ void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, f
             }
         }
     }
-    
+
     m_HeightMap.Normalize(minHeight, maxHeight);
+
+    ApplyFIRFilter(filter);
+
+    
 }
 
-void FaultFormationTerrain::ApplyFIRFilter()
-{
+void FaultFormationTerrain::ApplyFIRFilter(float filter)
+{ 
+    for(int z = 0; z <  m_TerrainDepth; z++)
+    {
+        float PrevVal = m_HeightMap.Get(0, z);
+        for(int x = 0; x < m_TerrainWidth; x++) 
+        {
+            PrevVal = FIRFilterSinglePoint(x, z, PrevVal, filter);
+        }
+    }
 
+    for(int x = 0; x < m_TerrainWidth; x++)
+    {
+        float PrevVal = m_HeightMap.Get(0, x);
+        for(int z = 0; z < m_TerrainDepth; z++) 
+        {
+            PrevVal = FIRFilterSinglePoint(x, z, PrevVal, filter);
+        }
+    }
+
+}
+
+float FaultFormationTerrain::FIRFilterSinglePoint(int x, int z, float lastVal, float filter)
+{
+    float curVal = m_HeightMap.Get(x, z);
+    float newVal = filter * lastVal + (1.0f - filter) * curVal;
+    m_HeightMap.Set(newVal, x, z);
+    return newVal;
 }
 
 FaultFormationTerrain::Line FaultFormationTerrain::GenerateRandomLine()
 {
     static std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(0, m_TerrainSize - 1);
+    std::uniform_int_distribution<int> distX(0, m_TerrainDepth - 1);
+    std::uniform_int_distribution<int> distZ(0, m_TerrainWidth - 1);
 
-    int x1 = dist(rng);
-    int z1 = dist(rng);
+    int x1 = distX(rng);
+    int z1 = distZ(rng);
 
-    int x2 = dist(rng);
-    int z2 = dist(rng);
+    int x2 = distX(rng);
+    int z2 = distZ(rng);
 
     if(x1 == x2 && z1 == z2)
         return GenerateRandomLine();

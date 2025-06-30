@@ -12,17 +12,19 @@ public:
     float GetTerrainScale() const;
     float GetHeight(int x, int z) const;
 
-    void LoadHeightMapFlat(size_t size);
+    void LoadHeightMapFlat(uint32_t width, uint32_t depth);
     void LoadHeightMapFromFile(const char* fileName);
     
     void InitTerrainMesh();
     void PrintHeightMapArray();
-    void SetTerrainSize(size_t size);
+    void SetTerrainSize(uint32_t width, uint32_t depth);
     void Draw(Shader shader);
 
 protected:
 
     int m_TerrainSize = 0;
+    uint32_t m_TerrainWidth = 0;
+    uint32_t m_TerrainDepth = 0;
     int m_TerrainScale = 0;
     Mesh m_TerrainMesh;
     Array2d m_HeightMap;

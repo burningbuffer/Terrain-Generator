@@ -20,6 +20,8 @@ void Mesh::InitMesh(const Terrain *pTerrain,int width, int depth)
     FillVertices(pTerrain);
     FillIndices();
     FillBuffers();
+
+    
 }
 
 void Mesh::FillVertices(const Terrain *pTerrain)
@@ -84,7 +86,7 @@ void Mesh::FillBuffers()
     BindEBO();
 
     LinkVBOAttributes(m_VBO, 0, 3, 3, 0);
-    LinkVBOAttributes(m_VBO, 1, 3, 3, 3);
+    //LinkVBOAttributes(m_VBO, 1, 3, 3, 3);
 
     UnbindVAO();
     UnbindVBO();

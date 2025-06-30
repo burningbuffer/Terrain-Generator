@@ -29,7 +29,8 @@ public:
     };
 
     void CreateFaultFormationTerrain(float numOfIterations, float filter, float min, float max);
-    void ApplyFIRFilter();
+    void ApplyFIRFilter(float filter);
+    float FIRFilterSinglePoint(int x, int z, float lastVal, float filter);
     Line GenerateRandomLine();
 
     

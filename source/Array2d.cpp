@@ -1,5 +1,6 @@
 #include "Array2d.hpp"
 #include <iostream>
+#include <assert.h>
 
 Array2d::Array2d()
 {
@@ -45,42 +46,62 @@ void Array2d::Delete()
 {
     free(m_pData);
 }
-
-float Array2d::Get(int x, int y) const
+float Array2d::Get(int x, int z) const
 {
-    return m_pData[(x*m_Width)+y];
+    int index = (x * m_Depth) + z;
+
+    if(index < 0 || index > (m_Width * m_Depth) - 1)
+    {
+        assert("ERROR: Array2d - Get Index out of bounds bro");
+    }
+    
+    return m_pData[index];
 }
 
-void Array2d::Set(float val, int x, int y)
+void Array2d::Set(float val, int x, int z)
 {   
-    m_pData[(x*m_Width)+y] = val;
+    int index = (x * m_Depth) + z;
+
+    if(index < 0 || index > (m_Width * m_Depth) - 1)
+    {
+        assert("ERROR: Array2d - Set Index out of bounds bro");
+    }
+    
+    m_pData[index] = val;
 }
 
-void Array2d::Normalize(float minRange, float maxRange)
+void Array2d::GetMinMax(float& Min, float& Max)
 {
-    float min = m_pData[0];
-    float max = m_pData[0];
+    Max = m_pData[0];
+    Min = m_pData[0];
 
     for (int i = 1 ; i < m_Width * m_Depth ; i++) {
-        if (m_pData[i] < min) {
-            min = m_pData[i];
+        if (m_pData[i] < Min) {
+            Min = m_pData[i];
         }
 
-        if (m_pData[i] > max) {
-            max = m_pData[i];
+        if (m_pData[i] > Max) {
+            Max = m_pData[i];
         }
     }
+}
 
-    if (max <= min) {
+void Array2d::Normalize(float MinRange, float MaxRange)
+{
+    float Min, Max;
+
+    GetMinMax(Min, Max);
+
+    if (Max <= Min) {
         return;
     }
 
-    float minMaxDelta = max - min;
-    float minMaxRange = maxRange - minRange;
+    float MinMaxDelta = Max - Min;
+    float MinMaxRange = MaxRange - MinRange;
 
     for (int i = 0 ; i < m_Width * m_Depth; i++) 
     {
-        m_pData[i] = ((m_pData[i] - min)/minMaxDelta) * minMaxRange + minRange;
+        m_pData[i] = ((m_pData[i] - Min)/MinMaxDelta) * MinMaxRange + MinRange;
     }
 }
 

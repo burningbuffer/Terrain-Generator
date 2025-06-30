@@ -8,8 +8,9 @@ public:
     void InitArray(int width, int depth, void* pData);
     void InitArray(int width, int depth, float data);
     void Delete();
-    float Get(int x, int y) const;
-    void Set(float val, int x, int y);
+    float Get(int x, int z) const;
+    void Set(float val, int x, int z);
+    void GetMinMax(float& Min, float& Max);
     void Normalize(float MinRange, float MaxRange);
     void PrintArray();
 private:
