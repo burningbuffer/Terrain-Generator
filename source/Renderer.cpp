@@ -87,8 +87,8 @@ void Renderer::Run()
     float minHeight = 0;
     float maxHeight = 300.f;
 
-    int terrainWidth = 128;
-    int terrainDepth = 256;
+    int terrainWidth = 256;
+    int terrainDepth = 512;
 
     FaultFormationTerrain terrain;
     terrain.SetTerrainScale(4);

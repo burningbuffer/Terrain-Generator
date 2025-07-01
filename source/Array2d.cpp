@@ -44,6 +44,7 @@ void Array2d::Delete()
 {
     free(m_pData);
 }
+
 float Array2d::Get(int x, int z) const
 {
     int index = (x * m_Depth) + z;
