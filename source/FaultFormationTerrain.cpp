@@ -50,7 +50,7 @@ void FaultFormationTerrain::ApplyFIRFilter(float filter)
 
     for(int x = 0; x < m_TerrainWidth; x++)
     {
-        float PrevVal = m_HeightMap.Get(0, x);
+        float PrevVal = m_HeightMap.Get(x, 0);
         for(int z = 0; z < m_TerrainDepth; z++) 
         {
             PrevVal = FIRFilterSinglePoint(x, z, PrevVal, filter);

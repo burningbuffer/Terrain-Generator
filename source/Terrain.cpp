@@ -21,10 +21,9 @@ float Terrain::GetHeight(int x, int z) const
     return m_HeightMap.Get(x, z);
 }
 
-void Terrain::LoadHeightMapFlat(uint32_t width, uint32_t depth)
+void Terrain::LoadHeightMapFlat()
 {
-    m_TerrainSize = width * depth;
-    m_HeightMap.InitArray(width, depth, 1.0f);
+    m_HeightMap.InitArray(m_TerrainWidth, m_TerrainDepth, 1.0f);
 }
 
 void Terrain::LoadHeightMapFromFile(const char* fileName)

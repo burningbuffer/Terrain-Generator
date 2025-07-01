@@ -24,7 +24,7 @@ Renderer::~Renderer() {}
 
 bool Renderer::Init() 
 {
-    glm::vec3 cameraPos   = glm::vec3(-100.0f, +500.0f, -100.0f);
+    glm::vec3 cameraPos   = glm::vec3(-100.0f, +400.0f, -100.0f);
     glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
     glm::vec3 cameraFront = glm::vec3(0.0, 0.0, 0.0);
     
@@ -83,17 +83,17 @@ void Renderer::ShowVendor()
 void Renderer::Run() 
 { 
     int iterations = 1000;
-    float filter = 0.9f;
+    float filter = 0.6f;
     float minHeight = 0;
     float maxHeight = 300.f;
 
-    int terrainWidth = 256;
+    int terrainWidth = 128;
     int terrainDepth = 256;
 
     FaultFormationTerrain terrain;
     terrain.SetTerrainScale(4);
     terrain.SetTerrainSize(terrainWidth, terrainDepth);
-    terrain.LoadHeightMapFlat(terrainWidth, terrainDepth);
+    terrain.LoadHeightMapFlat();
     terrain.CreateFaultFormationTerrain(iterations, filter , minHeight, maxHeight);
     terrain.InitTerrainMesh();
     

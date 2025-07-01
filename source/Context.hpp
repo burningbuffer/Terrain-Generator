@@ -18,5 +18,4 @@ struct Context
 
     float lastX = width / 2.0f;
     float lastY = height / 2.0f;
-
 };

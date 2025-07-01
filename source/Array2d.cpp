@@ -2,9 +2,7 @@
 #include <iostream>
 #include <assert.h>
 
-Array2d::Array2d()
-{
-}
+Array2d::Array2d(){}
 
 Array2d::~Array2d()
 {
@@ -70,10 +68,10 @@ void Array2d::Set(float val, int x, int z)
     m_pData[index] = val;
 }
 
-void Array2d::GetMinMax(float& Min, float& Max)
+void Array2d::Normalize(float minRange, float maxRange)
 {
-    Max = m_pData[0];
-    Min = m_pData[0];
+    float Max = m_pData[0];
+    float Min = m_pData[0];
 
     for (int i = 1 ; i < m_Width * m_Depth ; i++) {
         if (m_pData[i] < Min) {
@@ -84,31 +82,23 @@ void Array2d::GetMinMax(float& Min, float& Max)
             Max = m_pData[i];
         }
     }
-}
-
-void Array2d::Normalize(float MinRange, float MaxRange)
-{
-    float Min, Max;
-
-    GetMinMax(Min, Max);
 
     if (Max <= Min) {
         return;
     }
 
-    float MinMaxDelta = Max - Min;
-    float MinMaxRange = MaxRange - MinRange;
+    float minMaxDelta = Max - Min;
+    float minMaxRange = maxRange - minRange;
 
     for (int i = 0 ; i < m_Width * m_Depth; i++) 
     {
-        m_pData[i] = ((m_pData[i] - Min)/MinMaxDelta) * MinMaxRange + MinRange;
+        m_pData[i] = ((m_pData[i] - Min)/minMaxDelta) * minMaxRange + minRange;
     }
 }
 
 void Array2d::PrintArray()
 {
-    size_t size = m_Width * m_Depth - 1;
-    for (int i = 0 ; i < size; i++) 
+    for (int i = 0 ; i < m_Width * m_Depth; i++) 
     {
         std::cout <<  m_pData[i] << " ";
     }

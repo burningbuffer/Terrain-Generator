@@ -12,7 +12,7 @@ public:
     float GetTerrainScale() const;
     float GetHeight(int x, int z) const;
 
-    void LoadHeightMapFlat(uint32_t width, uint32_t depth);
+    void LoadHeightMapFlat();
     void LoadHeightMapFromFile(const char* fileName);
     
     void InitTerrainMesh();
