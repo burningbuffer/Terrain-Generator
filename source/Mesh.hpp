@@ -23,6 +23,7 @@ public:
     Mesh();
     ~Mesh();
     void InitMesh(const Terrain *pTerrain,int width, int depth);
+    void DeleteMesh();
     void Draw();
 
 private:

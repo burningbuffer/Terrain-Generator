@@ -2,24 +2,25 @@ cmake_minimum_required (VERSION 3.8)
 
 project(terrain-renderer)
 
-file(GLOB HEADERS 
-"source/*.hpp"
-)
+file(GLOB IMGUI_SOURCES "deps/imgui/*.cpp")
+file(GLOB IMGUI_GLFW_BACKEND "deps/imgui/backends/imgui_impl_glfw.cpp")
+file(GLOB IMGUI_OPENGL_BACKEND "deps/imgui/backends/imgui_impl_opengl3.cpp")
 
-file(GLOB SOURCES 
-"source/*.cpp"
-)
+file(GLOB HEADERS "source/*.hpp")
+file(GLOB SOURCES "source/*.cpp")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(terrain-renderer ${HEADERS} ${SOURCES})
+add_executable(terrain-renderer ${HEADERS} ${SOURCES} ${IMGUI_SOURCES} ${IMGUI_GLFW_BACKEND} ${IMGUI_OPENGL_BACKEND})
 
 target_include_directories(terrain-renderer PRIVATE deps/glm 
                                                     deps/glfw/include
                                                     deps/glew/include
-                                                    deps/stb)
+                                                    deps/stb
+                                                    deps/imgui
+                                                    deps/imgui/backends)
 
 target_link_directories(terrain-renderer PRIVATE deps/glfw/lib-vc2019
                                                  deps/glew/lib/Release/x64)

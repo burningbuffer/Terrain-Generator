@@ -25,10 +25,35 @@ void ProcessInput(GLFWwindow* window)
         context->camera.ProcessKeyboard(LEFT, context->deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         context->camera.ProcessKeyboard(RIGHT, context->deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+    {
+        if (!context->mouseFlag)
+        {
+            context->imguiMode = !context->imguiMode;
+
+            if (context->imguiMode)
+            {
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            }
+            else
+            {
+                context->firstMouse = true;
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            }
+        }
+        context->mouseFlag = true;
+    }
+    else
+    {
+        context->mouseFlag = false;
+    }
+    
 }
 
 void MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
@@ -41,21 +66,25 @@ void MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
         return;
     }
 
-    float xpos = static_cast<float>(xposIn);
-    float ypos = static_cast<float>(yposIn);
-
-    if (context->firstMouse)
+    if(context->imguiMode == false)
     {
+        float xpos = static_cast<float>(xposIn);
+        float ypos = static_cast<float>(yposIn);
+
+        if (context->firstMouse)
+        {
+            context->lastX = xpos;
+            context->lastY = ypos;
+            context->firstMouse = false;
+        }
+
+        float xoffset = xpos - context->lastX;
+        float yoffset = context->lastY - ypos;
+
         context->lastX = xpos;
         context->lastY = ypos;
-        context->firstMouse = false;
+
+        context->camera.ProcessMouseMovement(xoffset, yoffset);
     }
 
-    float xoffset = xpos - context->lastX;
-    float yoffset = context->lastY - ypos;
-
-    context->lastX = xpos;
-    context->lastY = ypos;
-
-    context->camera.ProcessMouseMovement(xoffset, yoffset);
 }

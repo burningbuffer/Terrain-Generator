@@ -6,6 +6,11 @@ Terrain::Terrain(){}
 
 Terrain::~Terrain(){}
 
+void Terrain::Clean()
+{
+    m_TerrainMesh.DeleteMesh();
+}
+
 void Terrain::SetTerrainScale(float scale)
 {
     m_TerrainScale = scale;

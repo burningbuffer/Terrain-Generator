@@ -7,6 +7,8 @@ class Terrain
 public:
     Terrain();
     ~Terrain();
+
+    void Clean();
     
     void SetTerrainScale(float scale);
     float GetTerrainScale() const;

@@ -38,18 +38,14 @@ void Array2d::InitArray(int width, int depth, float data)
     {
         m_pData[i] = data;
     }
-}
 
-void Array2d::Delete()
-{
-    free(m_pData);
 }
 
 float Array2d::Get(int x, int z) const
 {
     int index = (x * m_Depth) + z;
 
-    if(index < 0 || index > (m_Width * m_Depth) - 1)
+    if(index < 0 || index > (m_Width * m_Depth))
     {
         assert("ERROR: Array2d - Get Index out of bounds bro");
     }
@@ -61,7 +57,7 @@ void Array2d::Set(float val, int x, int z)
 {   
     int index = (x * m_Depth) + z;
 
-    if(index < 0 || index > (m_Width * m_Depth) - 1)
+    if(index < 0 || index > (m_Width * m_Depth))
     {
         assert("ERROR: Array2d - Set Index out of bounds bro");
     }
@@ -74,7 +70,7 @@ void Array2d::Normalize(float minRange, float maxRange)
     float Max = m_pData[0];
     float Min = m_pData[0];
 
-    for (int i = 1 ; i < m_Width * m_Depth ; i++) {
+    for (int i = 1 ; i < m_Width * m_Depth; i++) {
         if (m_pData[i] < Min) {
             Min = m_pData[i];
         }

@@ -32,34 +32,34 @@ void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, f
 
     m_HeightMap.Normalize(minHeight, maxHeight);
 
-    ApplyFIRFilter(filter);
+    FilterTerrain(filter);
 
     
 }
 
-void FaultFormationTerrain::ApplyFIRFilter(float filter)
+void FaultFormationTerrain::FilterTerrain(float filter)
 { 
     for(int z = 0; z <  m_TerrainDepth; z++)
     {
-        float PrevVal = m_HeightMap.Get(0, z);
+        float prevVal = m_HeightMap.Get(0, z);
         for(int x = 0; x < m_TerrainWidth; x++) 
         {
-            PrevVal = FIRFilterSinglePoint(x, z, PrevVal, filter);
+            prevVal = ApplyFIRFilter(x, z, prevVal, filter);
         }
     }
 
     for(int x = 0; x < m_TerrainWidth; x++)
     {
-        float PrevVal = m_HeightMap.Get(x, 0);
+        float prevVal = m_HeightMap.Get(x, 0);
         for(int z = 0; z < m_TerrainDepth; z++) 
         {
-            PrevVal = FIRFilterSinglePoint(x, z, PrevVal, filter);
+            prevVal = ApplyFIRFilter(x, z, prevVal, filter);
         }
     }
 
 }
 
-float FaultFormationTerrain::FIRFilterSinglePoint(int x, int z, float lastVal, float filter)
+float FaultFormationTerrain::ApplyFIRFilter(int x, int z, float lastVal, float filter)
 {
     float curVal = m_HeightMap.Get(x, z);
     float newVal = filter * lastVal + (1.0f - filter) * curVal;

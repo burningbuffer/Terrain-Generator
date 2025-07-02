@@ -24,6 +24,15 @@ void Mesh::InitMesh(const Terrain *pTerrain,int width, int depth)
     
 }
 
+void Mesh::DeleteMesh()
+{
+    glDeleteBuffers(1, &m_EBO);
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteVertexArrays(1, &m_VAO);
+    m_Vertices.clear();
+    m_Indices.clear();
+}
+
 void Mesh::FillVertices(const Terrain *pTerrain)
 {
     m_Vertices.resize(m_Width * m_Depth);
@@ -86,7 +95,6 @@ void Mesh::FillBuffers()
     BindEBO();
 
     LinkVBOAttributes(m_VBO, 0, 3, 3, 0);
-    //LinkVBOAttributes(m_VBO, 1, 3, 3, 3);
 
     UnbindVAO();
     UnbindVBO();
