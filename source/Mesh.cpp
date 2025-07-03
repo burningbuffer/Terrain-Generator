@@ -1,7 +1,9 @@
 #include "Mesh.hpp"
 #include "Terrain.hpp"
 
-Mesh::Mesh(){}
+Mesh::Mesh()
+{
+}
 
 Mesh::~Mesh()
 {
@@ -12,7 +14,7 @@ Mesh::~Mesh()
     m_Indices.clear();
 }
 
-void Mesh::InitMesh(const Terrain *pTerrain,int width, int depth)
+void Mesh::InitMesh(const Terrain* pTerrain, int width, int depth)
 {
     m_Width = width;
     m_Depth = depth;
@@ -20,8 +22,6 @@ void Mesh::InitMesh(const Terrain *pTerrain,int width, int depth)
     FillVertices(pTerrain);
     FillIndices();
     FillBuffers();
-
-    
 }
 
 void Mesh::DeleteMesh()
@@ -33,14 +33,14 @@ void Mesh::DeleteMesh()
     m_Indices.clear();
 }
 
-void Mesh::FillVertices(const Terrain *pTerrain)
+void Mesh::FillVertices(const Terrain* pTerrain)
 {
     m_Vertices.resize(m_Width * m_Depth);
 
     int Index = 0;
-    for(int z = 0; z < m_Depth; z++)
+    for (int z = 0; z < m_Depth; z++)
     {
-        for(int x = 0; x < m_Width; x++)
+        for (int x = 0; x < m_Width; x++)
         {
             m_Vertices[Index].InitVertex(pTerrain, x, z);
             Index++;
@@ -48,13 +48,13 @@ void Mesh::FillVertices(const Terrain *pTerrain)
     }
 }
 
-void Vertex::InitVertex(const Terrain *pTerrain, int x, int z)
+void Vertex::InitVertex(const Terrain* pTerrain, int x, int z)
 {
-    float y = pTerrain->GetHeight(x, z); 
+    float y     = pTerrain->GetHeight(x, z);
     float Scale = pTerrain->GetTerrainScale();
-    Pos = glm::vec3(x * Scale, y, z * Scale);
+    Pos         = glm::vec3(x * Scale, y, z * Scale);
 }
- 
+
 void Mesh::FillIndices()
 {
     int NumOfQuads = (m_Width - 1) * (m_Depth - 1);
@@ -62,13 +62,13 @@ void Mesh::FillIndices()
 
     GLint Index = 0;
 
-    for(int z = 0; z < m_Depth - 1; z++)
+    for (int z = 0; z < m_Depth - 1; z++)
     {
-        for(int x = 0; x < m_Width - 1; x++)
+        for (int x = 0; x < m_Width - 1; x++)
         {
-            GLuint IndexBottomLeft = z * m_Width + x;
-            GLuint IndexTopLeft = (z + 1) * m_Width + x;
-            GLuint IndexTopRight = (z + 1) * m_Width + x + 1;
+            GLuint IndexBottomLeft  = z * m_Width + x;
+            GLuint IndexTopLeft     = (z + 1) * m_Width + x;
+            GLuint IndexTopRight    = (z + 1) * m_Width + x + 1;
             GLuint IndexBottomRight = z * m_Width + x + 1;
 
             m_Indices[Index++] = IndexBottomLeft;
@@ -78,7 +78,6 @@ void Mesh::FillIndices()
             m_Indices[Index++] = IndexBottomLeft;
             m_Indices[Index++] = IndexTopRight;
             m_Indices[Index++] = IndexBottomRight;
-
         }
     }
 }
@@ -126,7 +125,7 @@ void Mesh::CreateVAO()
 void Mesh::LinkVBOAttributes(GLuint VBO, GLuint layout, int numOfComponents, int lineSize, int offset)
 {
     BindVBO();
-    glVertexAttribPointer(layout, numOfComponents, GL_FLOAT, GL_FALSE, lineSize * sizeof(float), (void*)(offset*sizeof(float)));
+    glVertexAttribPointer(layout, numOfComponents, GL_FLOAT, GL_FALSE, lineSize * sizeof(float), (void*)(offset * sizeof(float)));
     glEnableVertexAttribArray(layout);
     UnbindVBO();
 }

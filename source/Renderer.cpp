@@ -1,13 +1,13 @@
 #include "Renderer.hpp"
-#include <glm/glm.hpp>
-#include "Shader.hpp"
-#include "stb_image.h"
-#include "Input.hpp"
-#include "Terrain.hpp"
 #include "FaultFormationTerrain.hpp"
-#include "imgui.h"
+#include "Input.hpp"
+#include "Shader.hpp"
+#include "Terrain.hpp"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
+#include "imgui.h"
+#include "stb_image.h"
+#include <glm/glm.hpp>
 #include <iostream>
 
 Renderer::Renderer()
@@ -48,8 +48,8 @@ bool Renderer::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_Context.window = glfwCreateWindow(m_Context.width, m_Context.height, "Window", nullptr, nullptr);
-    
+    m_Context.window = glfwCreateWindow(m_Context.width, m_Context.height, "Terrain Generator", nullptr, nullptr);
+
     if (!m_Context.window)
     {
         std::cerr << "Error creating window\n";
@@ -73,26 +73,21 @@ bool Renderer::Init()
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiStyle& style = ImGui::GetStyle();
-    style.Colors[ImGuiCol_Border] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); 
-    style.Colors[ImGuiCol_TitleBg]         = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); 
-    style.Colors[ImGuiCol_TitleBgActive]   = ImVec4(0.8f, 0.0f, 0.0f, 1.0f); 
-    style.Colors[ImGuiCol_TitleBgCollapsed]= ImVec4(0.5f, 0.0f, 0.0f, 1.0f); 
-
-    style.Colors[ImGuiCol_FrameBg]= ImVec4(0.2f, 0.0f, 0.0f, 1.0f);
-    style.Colors[ImGuiCol_SliderGrab]= ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
-    style.Colors[ImGuiCol_SliderGrabActive]= ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
-    
-    style.Colors[ImGuiCol_Button]= ImVec4(0.8f, 0.0f, 0.0f, 1.0f);
-    style.Colors[ImGuiCol_ButtonHovered]= ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
-    style.Colors[ImGuiCol_ButtonActive]= ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
+    ImGuiStyle& style                       = ImGui::GetStyle();
+    style.Colors[ImGuiCol_Border]           = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_TitleBg]          = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_TitleBgActive]    = ImVec4(0.8f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.5f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_FrameBg]          = ImVec4(0.2f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_SliderGrab]       = ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_Button]           = ImVec4(0.8f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_ButtonHovered]    = ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
+    style.Colors[ImGuiCol_ButtonActive]     = ImVec4(0.6f, 0.0f, 0.0f, 1.0f);
 
     ImGui_ImplGlfw_InitForOpenGL(m_Context.window, true);
-    
-    ImGui_ImplOpenGL3_Init("#version 450");
 
-    ImGuiIO& io = ImGui::GetIO();
-    io.IniFilename = NULL;
+    ImGui_ImplOpenGL3_Init("#version 450");
 
     return true;
 }
@@ -112,11 +107,11 @@ void Renderer::ShowVendor()
 
 void Renderer::Run()
 {
-    int iterations = 500;
-    float filter = 0.6f;
+    int iterations  = 500;
+    float filter    = 0.6f;
     float minHeight = 0;
     float maxHeight = 300.f;
-    float scale = 4;
+    float scale     = 4;
 
     int terrainWidth = 256;
     int terrainDepth = 256;
@@ -130,12 +125,12 @@ void Renderer::Run()
 
     Shader shader{"shaders/vs.glsl", "shaders/fs.glsl"};
 
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 projection = glm::perspective(glm::radians(90.0f), static_cast<float>(m_Context.width) / m_Context.height, 0.1f, 2000.0f);
+    glm::mat4 model      = glm::mat4(1.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), static_cast<float>(m_Context.width / m_Context.height), 0.1f, 2000.0f);
 
     while (!glfwWindowShouldClose(m_Context.window))
     {
-        float currentFrame = static_cast<float>(glfwGetTime());
+        float currentFrame  = static_cast<float>(glfwGetTime());
         m_Context.deltaTime = currentFrame - m_Context.lastFrame;
         m_Context.lastFrame = currentFrame;
 
@@ -144,17 +139,18 @@ void Renderer::Run()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        
-        ImGui::Begin("Terrain");   
+
+        ImGui::Begin("Terrain");
 
         ImGui::SliderInt("Iterations", &iterations, 0, 1000);
-        ImGui::SliderFloat("MaxHeight", &maxHeight, 0.0f, 300.0f);
+        ImGui::SliderFloat("MaxHeight", &maxHeight, 0.0f, 600.0f);
         ImGui::SliderFloat("Erosion Factor", &filter, 0.0f, 1.0f);
         ImGui::SliderInt("Terrain Width", &terrainWidth, 10.0f, 1000.0f);
         ImGui::SliderInt("Terrain Depth", &terrainDepth, 10.0f, 1000.0f);
         ImGui::SliderFloat("Terrain Scale", &scale, 1.0f, 10.0f);
 
-        if (ImGui::Button("Generate")) {
+        if (ImGui::Button("Generate"))
+        {
             terrain.Clean();
             terrain.SetTerrainScale(scale);
             terrain.SetTerrainSize(terrainWidth, terrainDepth);
@@ -170,8 +166,6 @@ void Renderer::Run()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
         glm::mat4 view = m_Context.camera.GetViewMatrix();
 
         shader.useShader();
@@ -180,6 +174,8 @@ void Renderer::Run()
         shader.setMat4("projection", projection);
 
         terrain.Draw(shader);
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(m_Context.window);
         glfwPollEvents();

@@ -2,23 +2,24 @@
 #include "Terrain.hpp"
 #include <glm/glm.hpp>
 
-class FaultFormationTerrain : public Terrain 
+class FaultFormationTerrain : public Terrain
 {
-public:
-
+  public:
     FaultFormationTerrain();
     ~FaultFormationTerrain();
+    void CreateFaultFormationTerrain(float numOfIterations, float filter, float min, float max);
 
+  private:
     struct Line
     {
-    public:
+      public:
         glm::vec2 p1;
         glm::vec2 p2;
 
         void CreateLine(glm::vec2 a, glm::vec2 b)
         {
             p1 = a;
-            p2 = b;    
+            p2 = b;
         }
 
         void PrintLine()
@@ -28,12 +29,7 @@ public:
         }
     };
 
-    void CreateFaultFormationTerrain(float numOfIterations, float filter, float min, float max);
     void FilterTerrain(float filter);
     float ApplyFIRFilter(int x, int z, float lastVal, float filter);
     Line GenerateRandomLine();
-
-    
-
-    
 };

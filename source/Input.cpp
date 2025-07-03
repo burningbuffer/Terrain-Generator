@@ -53,7 +53,6 @@ void ProcessInput(GLFWwindow* window)
     {
         context->mouseFlag = false;
     }
-    
 }
 
 void MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
@@ -66,15 +65,15 @@ void MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
         return;
     }
 
-    if(context->imguiMode == false)
+    if (context->imguiMode == false)
     {
         float xpos = static_cast<float>(xposIn);
         float ypos = static_cast<float>(yposIn);
 
         if (context->firstMouse)
         {
-            context->lastX = xpos;
-            context->lastY = ypos;
+            context->lastX      = xpos;
+            context->lastY      = ypos;
             context->firstMouse = false;
         }
 
@@ -86,5 +85,4 @@ void MouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 
         context->camera.ProcessMouseMovement(xoffset, yoffset);
     }
-
 }
