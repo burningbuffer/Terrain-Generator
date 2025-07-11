@@ -62,23 +62,19 @@ void FaultFormationTerrain::FilterTerrain(float filter)
 
 float FaultFormationTerrain::ApplyFIRFilter(int x, int z, float lastVal, float filter)
 {
-    float curVal = m_HeightMap.Get(x, z);
-    float newVal = filter * lastVal + (1.0f - filter) * curVal;
+    float currVal = m_HeightMap.Get(x, z);
+    float newVal = filter * lastVal + (1.0f - filter) * currVal;
     m_HeightMap.Set(newVal, x, z);
     return newVal;
 }
 
 FaultFormationTerrain::Line FaultFormationTerrain::GenerateRandomLine()
 {
-    static std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> distX(0, m_TerrainDepth - 1);
-    std::uniform_int_distribution<int> distZ(0, m_TerrainWidth - 1);
+    int x1 = RandomInterval(0, m_TerrainDepth - 1);
+    int z1 = RandomInterval(0, m_TerrainWidth - 1);
 
-    int x1 = distX(rng);
-    int z1 = distZ(rng);
-
-    int x2 = distX(rng);
-    int z2 = distZ(rng);
+    int x2 = RandomInterval(0, m_TerrainDepth - 1);
+    int z2 = RandomInterval(0, m_TerrainWidth - 1);
 
     if (x1 == x2 && z1 == z2)
         return GenerateRandomLine();

@@ -5,7 +5,7 @@
 
 class Renderer
 {
-  public:
+public:
     Renderer();
     ~Renderer();
 
@@ -13,6 +13,6 @@ class Renderer
     void Run();
     void ShowVendor();
 
-  private:
+private:
     Context m_Context;
 };

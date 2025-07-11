@@ -4,7 +4,7 @@
 
 class Terrain
 {
-  public:
+public:
     Terrain();
     ~Terrain();
 
@@ -14,6 +14,9 @@ class Terrain
     float GetTerrainScale() const;
     float GetHeight(int x, int z) const;
 
+    float RandomInterval(float a, float b);
+    int RandomInterval(int a, int b);
+
     void LoadHeightMapFlat();
     void LoadHeightMapFromFile(const char* fileName);
 
@@ -22,7 +25,7 @@ class Terrain
     void SetTerrainSize(uint32_t width, uint32_t depth);
     void Draw(Shader shader);
 
-  protected:
+protected:
     int m_TerrainSize       = 0;
     uint32_t m_TerrainWidth = 0;
     uint32_t m_TerrainDepth = 0;

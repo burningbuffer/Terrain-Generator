@@ -11,3 +11,4 @@ AllowShortFunctionsOnASingleLine: false
 BinPackArguments: true
 BinPackParameters: true
 AllowAllArgumentsOnNextLine: false
+AccessModifierOffset: -4

@@ -4,15 +4,15 @@
 
 class FaultFormationTerrain : public Terrain
 {
-  public:
+public:
     FaultFormationTerrain();
     ~FaultFormationTerrain();
     void CreateFaultFormationTerrain(float numOfIterations, float filter, float min, float max);
 
-  private:
+private:
     struct Line
     {
-      public:
+    public:
         glm::vec2 p1;
         glm::vec2 p2;
 

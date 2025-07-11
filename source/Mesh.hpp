@@ -18,14 +18,14 @@ struct Vertex
 
 class Mesh
 {
-  public:
+public:
     Mesh();
     ~Mesh();
     void InitMesh(const Terrain* pTerrain, int width, int depth);
     void DeleteMesh();
     void Draw();
 
-  private:
+private:
     void FillVertices(const Terrain* pTerrain);
     void FillIndices();
 

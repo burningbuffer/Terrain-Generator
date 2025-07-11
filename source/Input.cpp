@@ -3,8 +3,6 @@
 #include "Context.hpp"
 #include <iostream>
 
-struct Context;
-
 void ProcessInput(GLFWwindow* window)
 {
     Context* context = static_cast<Context*>(glfwGetWindowUserPointer(window));

@@ -30,6 +30,16 @@ float Terrain::GetHeight(int x, int z) const
     return m_HeightMap.Get(x, z);
 }
 
+float Terrain::RandomInterval(float a, float b)
+{
+    return ((float)rand() / RAND_MAX) * (b - a) + a;
+}
+
+int Terrain::RandomInterval(int a, int b)
+{
+    return a + (rand() % (b - a + 1));
+}
+
 void Terrain::LoadHeightMapFlat()
 {
     m_HeightMap.InitArray(m_TerrainWidth, m_TerrainDepth, 1.0f);
@@ -79,7 +89,8 @@ void Terrain::PrintHeightMapArray()
 
 void Terrain::SetTerrainSize(uint32_t width, uint32_t depth)
 {
-    m_TerrainSize  = width * depth;
+    // m_TerrainSize  = width * depth;
+    m_TerrainSize  = depth;
     m_TerrainWidth = width;
     m_TerrainDepth = depth;
 }

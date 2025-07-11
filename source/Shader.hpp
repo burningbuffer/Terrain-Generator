@@ -10,7 +10,7 @@
 
 class Shader
 {
-  public:
+public:
     GLuint m_ID = NULL;
     Shader(const char* VertexShaderFile, const char* FragmentShaderFile);
 

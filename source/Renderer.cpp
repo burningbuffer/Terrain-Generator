@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include "DiamondSquareTerrain.hpp"
 #include "FaultFormationTerrain.hpp"
 #include "Input.hpp"
 #include "Shader.hpp"
@@ -107,26 +108,28 @@ void Renderer::ShowVendor()
 
 void Renderer::Run()
 {
-    int iterations  = 500;
-    float filter    = 0.6f;
-    float minHeight = 0;
-    float maxHeight = 300.f;
-    float scale     = 4;
-
+    float minHeight  = 0;
+    float maxHeight  = 300.f;
     int terrainWidth = 256;
     int terrainDepth = 256;
 
-    FaultFormationTerrain terrain;
+    int iterations = 500;
+    float filter   = 0.6f;
+    float scale    = 4;
+
+    float roughness = 0.5f;
+
+    DiamondSquareTerrain terrain;
     terrain.SetTerrainScale(scale);
     terrain.SetTerrainSize(terrainWidth, terrainDepth);
     terrain.LoadHeightMapFlat();
-    terrain.CreateFaultFormationTerrain(iterations, filter, minHeight, maxHeight);
+    terrain.CreateDiamondSquareTerrain(roughness, minHeight, maxHeight);
     terrain.InitTerrainMesh();
 
     Shader shader{"shaders/vs.glsl", "shaders/fs.glsl"};
 
     glm::mat4 model      = glm::mat4(1.0f);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), static_cast<float>(m_Context.width / m_Context.height), 0.1f, 2000.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), static_cast<float>(m_Context.width / m_Context.height), 0.1f, 2000.0f);
 
     while (!glfwWindowShouldClose(m_Context.window))
     {
@@ -148,6 +151,7 @@ void Renderer::Run()
         ImGui::SliderInt("Terrain Width", &terrainWidth, 10.0f, 1000.0f);
         ImGui::SliderInt("Terrain Depth", &terrainDepth, 10.0f, 1000.0f);
         ImGui::SliderFloat("Terrain Scale", &scale, 1.0f, 10.0f);
+        ImGui::SliderFloat("Terrain Roughness", &roughness, 0.1f, 1.5f);
 
         if (ImGui::Button("Generate"))
         {
@@ -155,7 +159,7 @@ void Renderer::Run()
             terrain.SetTerrainScale(scale);
             terrain.SetTerrainSize(terrainWidth, terrainDepth);
             terrain.LoadHeightMapFlat();
-            terrain.CreateFaultFormationTerrain(iterations, filter, minHeight, maxHeight);
+            terrain.CreateDiamondSquareTerrain(roughness, minHeight, maxHeight);
             terrain.InitTerrainMesh();
         }
 

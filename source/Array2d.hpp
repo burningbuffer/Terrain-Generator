@@ -2,7 +2,7 @@
 
 struct Array2d
 {
-  public:
+public:
     Array2d();
     ~Array2d();
     void InitArray(int width, int depth, void* pData);
@@ -12,7 +12,7 @@ struct Array2d
     void Normalize(float MinRange, float MaxRange);
     void PrintArray();
 
-  private:
+private:
     int m_Width    = 0;
     int m_Depth    = 0;
     float* m_pData = nullptr;
