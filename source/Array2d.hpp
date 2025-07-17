@@ -6,7 +6,7 @@ public:
     Array2d();
     ~Array2d();
     void InitArray(int width, int depth, void* pData);
-    void InitArray(int width, int depth, float data);
+    void InitArray(int width, int depth);
     float Get(int x, int z) const;
     void Set(float val, int x, int z);
     void Normalize(float MinRange, float MaxRange);

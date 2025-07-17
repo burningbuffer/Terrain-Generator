@@ -9,6 +9,7 @@ Array2d::Array2d()
 Array2d::~Array2d()
 {
     free(m_pData);
+    m_pData = NULL;
 }
 
 void Array2d::InitArray(int width, int depth, void* pData)
@@ -24,7 +25,7 @@ void Array2d::InitArray(int width, int depth, void* pData)
     m_pData = (float*)pData;
 }
 
-void Array2d::InitArray(int width, int depth, float data)
+void Array2d::InitArray(int width, int depth)
 {
     m_Width = width;
     m_Depth = depth;
@@ -34,12 +35,7 @@ void Array2d::InitArray(int width, int depth, float data)
         free(m_pData);
     }
 
-    m_pData = (float*)malloc(width * depth * sizeof(float));
-
-    for (int i = 0; i < width * depth; i++)
-    {
-        m_pData[i] = data;
-    }
+    m_pData = (float*)calloc(width * depth, sizeof(float));
 }
 
 float Array2d::Get(int x, int z) const

@@ -131,7 +131,7 @@ void Renderer::Run()
     fault_formation_terrain.SetTerrainScale(scale);
     fault_formation_terrain.SetTerrainSize(terrainWidth, terrainDepth);
     fault_formation_terrain.LoadHeightMapFlat();
-    
+
     Shader shader{"shaders/vs.glsl", "shaders/fs.glsl"};
 
     glm::mat4 model      = glm::mat4(1.0f);

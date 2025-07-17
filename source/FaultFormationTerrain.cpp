@@ -63,7 +63,7 @@ void FaultFormationTerrain::FilterTerrain(float filter)
 float FaultFormationTerrain::ApplyFIRFilter(int x, int z, float lastVal, float filter)
 {
     float currVal = m_HeightMap.Get(x, z);
-    float newVal = filter * lastVal + (1.0f - filter) * currVal;
+    float newVal  = filter * lastVal + (1.0f - filter) * currVal;
     m_HeightMap.Set(newVal, x, z);
     return newVal;
 }

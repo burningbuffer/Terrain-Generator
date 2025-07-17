@@ -42,7 +42,7 @@ int Terrain::RandomInterval(int a, int b)
 
 void Terrain::LoadHeightMapFlat()
 {
-    m_HeightMap.InitArray(m_TerrainWidth, m_TerrainDepth, 1.0f);
+    m_HeightMap.InitArray(m_TerrainWidth, m_TerrainDepth);
 }
 
 void Terrain::LoadHeightMapFromFile(const char* fileName)
