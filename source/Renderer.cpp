@@ -119,13 +119,19 @@ void Renderer::Run()
 
     float roughness = 0.5f;
 
-    DiamondSquareTerrain terrain;
-    terrain.SetTerrainScale(scale);
-    terrain.SetTerrainSize(terrainWidth, terrainDepth);
-    terrain.LoadHeightMapFlat();
-    terrain.CreateDiamondSquareTerrain(roughness, minHeight, maxHeight);
-    terrain.InitTerrainMesh();
+    bool ds = true;
 
+    DiamondSquareTerrain diamond_square_terrain;
+    diamond_square_terrain.SetTerrainScale(scale);
+    diamond_square_terrain.SetTerrainSize(terrainWidth, terrainDepth);
+    diamond_square_terrain.LoadHeightMapFlat();
+    diamond_square_terrain.InitTerrainMesh();
+
+    FaultFormationTerrain fault_formation_terrain;
+    fault_formation_terrain.SetTerrainScale(scale);
+    fault_formation_terrain.SetTerrainSize(terrainWidth, terrainDepth);
+    fault_formation_terrain.LoadHeightMapFlat();
+    
     Shader shader{"shaders/vs.glsl", "shaders/fs.glsl"};
 
     glm::mat4 model      = glm::mat4(1.0f);
@@ -143,24 +149,36 @@ void Renderer::Run()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::Begin("Terrain");
+        ImGui::Begin("Terrain Properties");
 
-        ImGui::SliderInt("Iterations", &iterations, 0, 1000);
-        ImGui::SliderFloat("MaxHeight", &maxHeight, 0.0f, 600.0f);
-        ImGui::SliderFloat("Erosion Factor", &filter, 0.0f, 1.0f);
         ImGui::SliderInt("Terrain Width", &terrainWidth, 10.0f, 1000.0f);
         ImGui::SliderInt("Terrain Depth", &terrainDepth, 10.0f, 1000.0f);
         ImGui::SliderFloat("Terrain Scale", &scale, 1.0f, 10.0f);
+        ImGui::SliderFloat("MaxHeight", &maxHeight, 0.0f, 600.0f);
+        ImGui::SliderInt("Iterations", &iterations, 0, 1000);
+        ImGui::SliderFloat("Erosion Factor", &filter, 0.0f, 1.0f);
         ImGui::SliderFloat("Terrain Roughness", &roughness, 0.1f, 1.5f);
 
-        if (ImGui::Button("Generate"))
+        if (ImGui::Button("Generate Fault Formation"))
         {
-            terrain.Clean();
-            terrain.SetTerrainScale(scale);
-            terrain.SetTerrainSize(terrainWidth, terrainDepth);
-            terrain.LoadHeightMapFlat();
-            terrain.CreateDiamondSquareTerrain(roughness, minHeight, maxHeight);
-            terrain.InitTerrainMesh();
+            ds = false;
+            fault_formation_terrain.Clean();
+            fault_formation_terrain.SetTerrainScale(scale);
+            fault_formation_terrain.SetTerrainSize(terrainWidth, terrainDepth);
+            fault_formation_terrain.LoadHeightMapFlat();
+            fault_formation_terrain.CreateFaultFormationTerrain(iterations, filter, minHeight, maxHeight);
+            fault_formation_terrain.InitTerrainMesh();
+        }
+
+        if (ImGui::Button("Generate Diamond Square"))
+        {
+            ds = true;
+            diamond_square_terrain.Clean();
+            diamond_square_terrain.SetTerrainScale(scale);
+            diamond_square_terrain.SetTerrainSize(terrainWidth, terrainDepth);
+            diamond_square_terrain.LoadHeightMapFlat();
+            diamond_square_terrain.CreateDiamondSquareTerrain(roughness, minHeight, maxHeight);
+            diamond_square_terrain.InitTerrainMesh();
         }
 
         ImGui::End();
@@ -177,7 +195,7 @@ void Renderer::Run()
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
-        terrain.Draw(shader);
+        ds == true ? diamond_square_terrain.Draw(shader) : fault_formation_terrain.Draw(shader);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -186,4 +204,6 @@ void Renderer::Run()
     }
 
     shader.deleteShader();
+    diamond_square_terrain.Clean();
+    fault_formation_terrain.Clean();
 }
