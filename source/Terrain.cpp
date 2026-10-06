@@ -89,7 +89,6 @@ void Terrain::PrintHeightMapArray()
 
 void Terrain::SetTerrainSize(uint32_t width, uint32_t depth)
 {
-    // m_TerrainSize  = width * depth;
     m_TerrainSize  = depth;
     m_TerrainWidth = width;
     m_TerrainDepth = depth;

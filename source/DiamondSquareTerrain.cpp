@@ -42,15 +42,12 @@ void DiamondSquareTerrain::DiamondStep(int currentSize, float currentHeight)
 
     for (int z = 0; z < m_TerrainDepth; z += currentSize)
     {
-        for (int x = 0; x < m_TerrainDepth; x += currentSize)
+        for (int x = 0; x < m_TerrainWidth; x += currentSize)
         {
-            int next_x = (x + currentSize);
-            int next_z = (z + currentSize);
+            int next_x = (x + currentSize) % m_TerrainSize;
+            int next_z = (z + currentSize) % m_TerrainSize;
 
-            if (next_x >= m_TerrainSize)
-                next_x = m_TerrainSize - 1;
-            if (next_z >= m_TerrainSize)
-                next_z = m_TerrainSize - 1;
+
 
             float topLeft     = m_HeightMap.Get(x, z);
             float topRight    = m_HeightMap.Get(next_x, z);
@@ -74,15 +71,12 @@ void DiamondSquareTerrain::SquareStep(int currentSize, float currentHeight)
 
     for (int z = 0; z < m_TerrainDepth; z += currentSize)
     {
-        for (int x = 0; x < m_TerrainDepth; x += currentSize)
+        for (int x = 0; x < m_TerrainWidth; x += currentSize)
         {
-            int next_x = (x + currentSize);
-            int next_z = (z + currentSize);
+            int next_x = (x + currentSize) % m_TerrainSize;
+            int next_z = (z + currentSize) % m_TerrainSize;
 
-            if (next_x >= m_TerrainSize)
-                next_x = m_TerrainSize - 1;
-            if (next_z >= m_TerrainSize)
-                next_z = m_TerrainSize - 1;
+
 
             int mid_x = (x + HalfSize);
             int mid_z = (z + HalfSize);
@@ -104,13 +98,13 @@ void DiamondSquareTerrain::SquareStep(int currentSize, float currentHeight)
             float currBotRight = m_HeightMap.Get(next_x, next_z);
 
             float prevXCenter = m_HeightMap.Get(prev_mid_x, mid_z);
-            float nextXCenter = m_HeightMap.Get(next_mid_z, mid_z);
+            float nextXCenter = m_HeightMap.Get(next_mid_x, mid_z);
 
             float currLeftMid = (currTopLeft + currCenter + currBotLeft + prevXCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
             float currTopMid  = (currTopLeft + currCenter + currTopRight + prevYCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
 
             float currRightMid  = (currTopRight + currCenter + currBotRight + nextXCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
-            float currBottomMid = (currBotLeft + currCenter + currBotRight + nextXCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
+            float currBottomMid = (currBotLeft + currCenter + currBotRight + nextYCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
 
             m_HeightMap.Set(currTopMid, mid_x, z);
             m_HeightMap.Set(currLeftMid, x, mid_z);
