@@ -39,34 +39,6 @@ void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, f
     FilterTerrain(filter);
 }
 
-void FaultFormationTerrain::FilterTerrain(float filter)
-{
-    for (int z = 0; z < m_TerrainDepth; z++)
-    {
-        float prevVal = m_HeightMap.Get(0, z);
-        for (int x = 0; x < m_TerrainWidth; x++)
-        {
-            prevVal = ApplyFIRFilter(x, z, prevVal, filter);
-        }
-    }
-
-    for (int x = 0; x < m_TerrainWidth; x++)
-    {
-        float prevVal = m_HeightMap.Get(x, 0);
-        for (int z = 0; z < m_TerrainDepth; z++)
-        {
-            prevVal = ApplyFIRFilter(x, z, prevVal, filter);
-        }
-    }
-}
-
-float FaultFormationTerrain::ApplyFIRFilter(int x, int z, float lastVal, float filter)
-{
-    float currVal = m_HeightMap.Get(x, z);
-    float newVal  = filter * lastVal + (1.0f - filter) * currVal;
-    m_HeightMap.Set(newVal, x, z);
-    return newVal;
-}
 
 FaultFormationTerrain::Line FaultFormationTerrain::GenerateRandomLine()
 {

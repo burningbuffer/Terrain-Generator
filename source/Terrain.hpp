@@ -1,5 +1,5 @@
 #pragma once
-#include "Array2d.hpp"
+#include "Heightmap2d.hpp"
 #include "Mesh.hpp"
 
 class Terrain
@@ -26,10 +26,12 @@ public:
     void Draw(Shader shader);
 
 protected:
+    void FilterTerrain(float filter);
+    float ApplyFIRFilter(int x, int z, float lastVal, float filter);
     int m_TerrainSize       = 0;
     uint32_t m_TerrainWidth = 0;
     uint32_t m_TerrainDepth = 0;
     int m_TerrainScale      = 0;
     Mesh m_TerrainMesh;
-    Array2d m_HeightMap;
+    Heightmap2d m_HeightMap;
 };

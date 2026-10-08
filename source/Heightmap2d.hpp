@@ -1,10 +1,10 @@
 #pragma once
 
-struct Array2d
+struct Heightmap2d
 {
 public:
-    Array2d();
-    ~Array2d();
+    Heightmap2d();
+    ~Heightmap2d();
     void InitArray(int width, int depth, void* pData);
     void InitArray(int width, int depth);
     float Get(int x, int z) const;

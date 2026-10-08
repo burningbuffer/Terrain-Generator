@@ -29,7 +29,5 @@ private:
         }
     };
 
-    void FilterTerrain(float filter);
-    float ApplyFIRFilter(int x, int z, float lastVal, float filter);
     Line GenerateRandomLine();
 };

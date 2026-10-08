@@ -1,18 +1,18 @@
-#include "Array2d.hpp"
+#include "Heightmap2d.hpp"
 #include <assert.h>
 #include <iostream>
 
-Array2d::Array2d()
+Heightmap2d::Heightmap2d()
 {
 }
 
-Array2d::~Array2d()
+Heightmap2d::~Heightmap2d()
 {
     free(m_pData);
     m_pData = NULL;
 }
 
-void Array2d::InitArray(int width, int depth, void* pData)
+void Heightmap2d::InitArray(int width, int depth, void* pData)
 {
     m_Width = width;
     m_Depth = depth;
@@ -25,7 +25,7 @@ void Array2d::InitArray(int width, int depth, void* pData)
     m_pData = (float*)pData;
 }
 
-void Array2d::InitArray(int width, int depth)
+void Heightmap2d::InitArray(int width, int depth)
 {
     m_Width = width;
     m_Depth = depth;
@@ -38,31 +38,31 @@ void Array2d::InitArray(int width, int depth)
     m_pData = (float*)calloc(width * depth, sizeof(float));
 }
 
-float Array2d::Get(int x, int z) const
+float Heightmap2d::Get(int x, int z) const
 {
     int index = (x * m_Depth) + z;
 
     if (index < 0 || index > (m_Width * m_Depth))
     {
-        assert("ERROR: Array2d - Get Index out of bounds bro");
+        assert("ERROR: Heightmap2d - Get Index out of bounds bro");
     }
 
     return m_pData[index];
 }
 
-void Array2d::Set(float val, int x, int z)
+void Heightmap2d::Set(float val, int x, int z)
 {
     int index = (x * m_Depth) + z;
 
     if (index < 0 || index > (m_Width * m_Depth))
     {
-        assert("ERROR: Array2d - Set Index out of bounds bro");
+        assert("ERROR: Heightmap2d - Set Index out of bounds bro");
     }
 
     m_pData[index] = val;
 }
 
-void Array2d::Normalize(float minRange, float maxRange)
+void Heightmap2d::Normalize(float minRange, float maxRange)
 {
     float Max = m_pData[0];
     float Min = m_pData[0];
@@ -94,7 +94,7 @@ void Array2d::Normalize(float minRange, float maxRange)
     }
 }
 
-void Array2d::PrintArray()
+void Heightmap2d::PrintArray()
 {
     for (int i = 0; i < m_Width * m_Depth; i++)
     {

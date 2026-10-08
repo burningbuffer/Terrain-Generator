@@ -11,7 +11,7 @@ enum camMovement
     RIGHT
 };
 
-const float SPEED       = 50.0f;
+const float SPEED       = 100.0f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM        = 45.0f;
 
