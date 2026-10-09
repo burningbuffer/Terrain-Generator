@@ -78,33 +78,22 @@ void DiamondSquareTerrain::SquareStep(int currentSize, float currentHeight)
             int prevMidX = (x - halfSize + m_TerrainSize) % m_TerrainSize;
             int prevMidZ = (z - halfSize + m_TerrainSize) % m_TerrainSize;
 
-            int nextMidX = (midX + halfSize + m_TerrainSize) % m_TerrainSize;
-            int nextMidZ = (midZ + halfSize + m_TerrainSize) % m_TerrainSize;
-
             float currTopLeft  = m_HeightMap.Get(x, z);
             float currTopRight = m_HeightMap.Get(nextX, z);
-            float currCenter   = m_HeightMap.Get(midX, midZ);
-
-            float prevYCenter = m_HeightMap.Get(midX, prevMidZ);
-            float nextYCenter = m_HeightMap.Get(midX, nextMidZ);
-
             float currBotLeft  = m_HeightMap.Get(x, nextZ);
-            float currBotRight = m_HeightMap.Get(nextX, nextZ);
 
-            float prevXCenter = m_HeightMap.Get(prevMidX, midZ);
-            float nextXCenter = m_HeightMap.Get(nextMidX, midZ);
+            float currCenter   = m_HeightMap.Get(midX, midZ);
+            float prevYCenter  = m_HeightMap.Get(midX, prevMidZ);
+            float prevXCenter  = m_HeightMap.Get(prevMidX, midZ);
 
+            // Left Edge Midpoint (x, midZ)
             float currLeftMid = (currTopLeft + currCenter + currBotLeft + prevXCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
+            
+            // Top Edge Midpoint (midX, z)
             float currTopMid  = (currTopLeft + currCenter + currTopRight + prevYCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
-
-            float currRightMid  = (currTopRight + currCenter + currBotRight + nextXCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
-            float currBottomMid = (currBotLeft + currCenter + currBotRight + nextYCenter) / 4.0f + RandomInterval(-currentHeight, +currentHeight);
 
             m_HeightMap.Set(currTopMid, midX, z);
             m_HeightMap.Set(currLeftMid, x, midZ);
-
-            m_HeightMap.Set(currRightMid, nextX, midZ);
-            m_HeightMap.Set(currBottomMid, midX, nextZ);
         }
     }
 }
