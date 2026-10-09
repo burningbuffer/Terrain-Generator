@@ -39,7 +39,6 @@ void FaultFormationTerrain::CreateFaultFormationTerrain(float numOfIterations, f
     FilterTerrain(filter);
 }
 
-
 FaultFormationTerrain::Line FaultFormationTerrain::GenerateRandomLine()
 {
     int x1 = RandomInterval(0, m_TerrainDepth - 1);
